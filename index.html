@@ -1,0 +1,2545 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>ZIROWR STORE — Official</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Orbitron:wght@500;700;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+* { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+
+:root {
+  --bg-main: #14171c;
+  --bg-card: #1a1e25;
+  --bg-elevated: #21262e;
+  --bg-hover: #2a3038;
+  --text-primary: #e8eaf0;
+  --text-secondary: #a0a8b8;
+  --text-muted: #6b7280;
+  --border: #2a3038;
+  --border-light: #353c47;
+  --red: #c92a2a;
+  --red-light: #e63946;
+  --blue: #1a4d8f;
+  --blue-light: #2d5f9e;
+  --success: #10b981;
+  --warning: #f59e0b;
+  --error: #ef4444;
+  --radius: 12px;
+  --radius-sm: 8px;
+  --transition: 0.25s ease;
+}
+
+html { font-size: 14px; }
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  background: var(--bg-main);
+  color: var(--text-primary);
+  min-height: 100vh;
+  overflow-x: hidden;
+  line-height: 1.5;
+}
+
+/* Background pattern subtle */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image:
+    radial-gradient(circle at 20% 20%, rgba(201,42,42,0.04) 0%, transparent 40%),
+    radial-gradient(circle at 80% 80%, rgba(26,77,143,0.04) 0%, transparent 40%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border-light); border-radius: 10px; }
+::-webkit-scrollbar-thumb:hover { background: var(--red); }
+
+/* ===== WELCOME SCREEN ===== */
+#welcomeScreen {
+  position: fixed; inset: 0; z-index: 9999;
+  background: #0a0c10;
+  display: flex; align-items: center; justify-content: center;
+  transition: opacity 0.6s ease, visibility 0.6s ease;
+}
+#welcomeScreen.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
+.welcome-content { text-align: center; padding: 20px; max-width: 700px; }
+.spider-logo {
+  width: 90px; height: 90px; margin: 0 auto 24px;
+  border-radius: 50%; background: var(--red);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 2.4rem; color: #fff;
+  animation: pulseLogo 2s ease-in-out infinite;
+}
+@keyframes pulseLogo {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+}
+.welcome-title {
+  font-family: 'Orbitron', sans-serif;
+  font-size: clamp(1.4rem, 5vw, 2.2rem);
+  font-weight: 900; color: #fff; letter-spacing: 2px;
+  min-height: 1.5em; margin-bottom: 8px;
+}
+.welcome-title .cursor {
+  display: inline-block; width: 3px; height: 1em;
+  background: var(--red); margin-left: 4px; vertical-align: middle;
+  animation: blink 0.8s infinite;
+}
+@keyframes blink { 0%, 50% { opacity: 1; } 51%, 100% { opacity: 0; } }
+.welcome-sub {
+  font-size: clamp(0.7rem, 2vw, 0.85rem);
+  color: rgba(255,255,255,0.5); letter-spacing: 4px;
+  text-transform: uppercase; margin-bottom: 30px;
+}
+.welcome-bar {
+  width: 200px; height: 3px; background: rgba(255,255,255,0.1);
+  border-radius: 10px; margin: 0 auto; overflow: hidden;
+}
+.welcome-bar-fill {
+  height: 100%; background: var(--red);
+  border-radius: 10px; width: 0%;
+  transition: width 0.3s ease;
+}
+
+/* ===== APP ===== */
+#app { display: none; }
+#app.visible { display: block; }
+.container { max-width: 1280px; margin: 0 auto; padding: 0 16px; position: relative; z-index: 1; }
+
+/* ===== TOPBAR ===== */
+.topbar {
+  display: none;
+  position: sticky; top: 0; z-index: 90;
+  background: rgba(20,23,28,0.95);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border);
+  padding: 10px 14px;
+  align-items: center; justify-content: space-between;
+  gap: 10px;
+}
+.sidebar-toggle {
+  width: 38px; height: 38px; border-radius: 10px;
+  background: var(--bg-card); border: 1px solid var(--border);
+  color: var(--text-primary);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1rem; cursor: pointer;
+  transition: all var(--transition);
+}
+.sidebar-toggle:hover { background: var(--red); color: #fff; border-color: var(--red); }
+.topbar-title {
+  display: flex; align-items: center; gap: 8px;
+  font-family: 'Orbitron', sans-serif;
+  font-weight: 700; font-size: 0.9rem; letter-spacing: 0.8px;
+  flex: 1; justify-content: center;
+}
+.topbar-logo-icon {
+  width: 28px; height: 28px; border-radius: 7px;
+  background: var(--red);
+  display: flex; align-items: center; justify-content: center;
+  color: #fff; font-size: 0.75rem;
+}
+.topbar-actions { display: flex; align-items: center; gap: 8px; }
+
+/* ===== SIDEBAR ===== */
+.sidebar {
+  position: fixed; top: 0; left: 0; bottom: 0;
+  width: 260px;
+  background: var(--bg-card);
+  border-right: 1px solid var(--border);
+  z-index: 200;
+  display: flex; flex-direction: column;
+  transform: translateX(0);
+  transition: transform 0.3s ease;
+  overflow-y: auto;
+}
+.sidebar-head {
+  padding: 16px;
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: space-between;
+}
+.sidebar-logo { display: flex; align-items: center; gap: 10px; }
+.sidebar-logo-icon {
+  width: 38px; height: 38px; border-radius: 10px;
+  background: var(--red);
+  display: flex; align-items: center; justify-content: center;
+  color: #fff; font-size: 1rem;
+}
+.sidebar-logo-text {
+  font-family: 'Orbitron', sans-serif;
+  font-weight: 700; font-size: 0.9rem; letter-spacing: 0.8px;
+}
+.sidebar-logo-text small {
+  display: block; font-size: 0.55rem;
+  color: var(--text-muted); letter-spacing: 2px;
+}
+.sidebar-close-btn {
+  display: none; width: 32px; height: 32px;
+  border-radius: 8px; background: var(--bg-elevated);
+  border: 1px solid var(--border); color: var(--text-secondary);
+  cursor: pointer; font-size: 0.85rem;
+  align-items: center; justify-content: center;
+  transition: all var(--transition);
+}
+.sidebar-close-btn:hover { background: var(--error); color: #fff; border-color: var(--error); }
+
+.sidebar-user { padding: 12px 16px; border-bottom: 1px solid var(--border); }
+.sidebar-user-inner {
+  display: flex; align-items: center; gap: 10px;
+  padding: 10px; border-radius: 10px;
+  background: var(--bg-elevated); border: 1px solid var(--border);
+}
+.sidebar-user-avatar {
+  width: 38px; height: 38px; border-radius: 50%;
+  background: var(--red);
+  display: flex; align-items: center; justify-content: center;
+  color: #fff; font-weight: 700; font-size: 0.85rem;
+  overflow: hidden; flex-shrink: 0;
+}
+.sidebar-user-avatar img { width: 100%; height: 100%; object-fit: cover; }
+.sidebar-user-info { flex: 1; min-width: 0; }
+.sidebar-user-name { font-size: 0.82rem; font-weight: 600; }
+.sidebar-user-sub { font-size: 0.68rem; color: var(--text-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.sidebar-user-logout {
+  width: 32px; height: 32px; border-radius: 8px;
+  background: var(--bg-card); border: 1px solid var(--border);
+  color: var(--text-secondary); cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.8rem; transition: all var(--transition);
+}
+.sidebar-user-logout:hover { background: var(--error); color: #fff; border-color: var(--error); }
+.sidebar-login-btn {
+  width: 100%; padding: 10px; border-radius: 10px;
+  background: var(--red); color: #fff;
+  border: none; cursor: pointer;
+  font-weight: 600; font-size: 0.8rem;
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  transition: all var(--transition);
+}
+.sidebar-login-btn:hover { background: var(--red-light); }
+
+.sidebar-nav { flex: 1; padding: 10px 12px; }
+.sidebar-section {
+  font-size: 0.6rem; color: var(--text-muted);
+  font-weight: 700; text-transform: uppercase;
+  letter-spacing: 1px; padding: 12px 8px 6px;
+}
+.sidebar-link {
+  display: flex; align-items: center; gap: 10px;
+  padding: 9px 12px; border-radius: 9px;
+  font-size: 0.78rem; font-weight: 500;
+  color: var(--text-secondary); text-decoration: none;
+  transition: all var(--transition);
+  margin-bottom: 2px; cursor: pointer;
+  position: relative;
+}
+.sidebar-link:hover { background: var(--bg-hover); color: var(--text-primary); }
+.sidebar-link.active {
+  background: rgba(201,42,42,0.12);
+  color: var(--red-light); font-weight: 600;
+}
+.sidebar-link.active::before {
+  content: ''; position: absolute;
+  left: 0; top: 20%; bottom: 20%; width: 3px;
+  border-radius: 2px; background: var(--red);
+}
+.sidebar-link i { width: 18px; text-align: center; font-size: 0.85rem; }
+.sidebar-foot {
+  padding: 12px 16px; border-top: 1px solid var(--border);
+}
+.sidebar-status {
+  display: flex; align-items: center; gap: 6px;
+  padding: 8px 12px; border-radius: 10px;
+  background: rgba(16,185,129,0.08);
+  border: 1px solid rgba(16,185,129,0.2);
+  font-size: 0.72rem; font-weight: 600;
+  color: var(--success); justify-content: center;
+}
+.sidebar-status .dot {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: var(--success); animation: pulseDot 2s infinite;
+}
+@keyframes pulseDot {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(16,185,129,0.6); }
+  50% { box-shadow: 0 0 0 6px rgba(16,185,129,0); }
+}
+.sidebar-overlay {
+  display: none; position: fixed; inset: 0;
+  background: rgba(0,0,0,0.6); backdrop-filter: blur(4px);
+  z-index: 150; animation: fadeIn 0.2s ease;
+}
+.sidebar-overlay.active { display: block; }
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+#app { padding-left: 260px; transition: padding-left 0.3s ease; }
+body.sidebar-collapsed #app { padding-left: 0; }
+body.sidebar-collapsed .topbar { display: flex; }
+
+/* ===== HERO ===== */
+.hero { padding: 40px 0 30px; text-align: center; }
+.hero-badge {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 6px 14px; border-radius: 20px;
+  background: rgba(201,42,42,0.1);
+  border: 1px solid rgba(201,42,42,0.3);
+  color: var(--red-light); font-size: 0.7rem; font-weight: 600;
+  letter-spacing: 1px; text-transform: uppercase; margin-bottom: 16px;
+}
+.hero h1 {
+  font-family: 'Orbitron', sans-serif;
+  font-size: clamp(1.6rem, 4.5vw, 2.6rem);
+  font-weight: 900; letter-spacing: 1px; margin-bottom: 12px;
+  color: var(--red);
+}
+.hero p {
+  color: var(--text-secondary); font-size: 0.9rem;
+  max-width: 600px; margin: 0 auto 24px;
+}
+.hero-buttons { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
+
+.btn {
+  padding: 10px 22px; border-radius: 10px;
+  font-size: 0.8rem; font-weight: 600;
+  cursor: pointer; border: none;
+  transition: all var(--transition);
+  display: inline-flex; align-items: center; gap: 6px;
+  text-decoration: none;
+}
+.btn-primary { background: var(--red); color: #fff; }
+.btn-primary:hover { background: var(--red-light); transform: translateY(-2px); }
+.btn-secondary {
+  background: var(--bg-card); color: var(--text-primary);
+  border: 1px solid var(--border);
+}
+.btn-secondary:hover { background: var(--bg-hover); transform: translateY(-2px); }
+
+/* ===== SECTION ===== */
+.section { padding: 30px 0; }
+.section-header {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 16px; flex-wrap: wrap; gap: 10px;
+}
+.section-title {
+  font-size: 1.1rem; font-weight: 700;
+  display: flex; align-items: center; gap: 8px;
+}
+.section-title i { color: var(--red-light); }
+.section-sub { font-size: 0.75rem; color: var(--text-muted); }
+.section-desc {
+  font-size: 0.8rem; color: var(--text-secondary);
+  line-height: 1.6; margin-bottom: 16px;
+  padding: 12px 16px;
+  background: var(--bg-card); border: 1px solid var(--border);
+  border-radius: 10px; border-left: 3px solid var(--red);
+}
+
+/* ===== DASHBOARD ===== */
+.dash-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 12px;
+}
+.stat-card {
+  background: var(--bg-card); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 16px;
+  transition: all var(--transition);
+}
+.stat-card:hover {
+  border-color: var(--red-light);
+  transform: translateY(-2px);
+}
+.stat-head {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 12px;
+}
+.stat-icon {
+  width: 36px; height: 36px; border-radius: 8px;
+  background: var(--bg-elevated);
+  display: flex; align-items: center; justify-content: center;
+  color: var(--red-light); font-size: 0.9rem;
+  border: 1px solid var(--border);
+}
+.stat-live {
+  font-size: 0.6rem; padding: 3px 8px; border-radius: 10px;
+  background: rgba(16,185,129,0.1); color: var(--success);
+  font-weight: 600; letter-spacing: 0.5px; text-transform: uppercase;
+}
+.stat-value {
+  font-size: 1.6rem; font-weight: 800;
+  font-family: 'Orbitron', sans-serif;
+  line-height: 1; margin-bottom: 4px;
+}
+.stat-label {
+  font-size: 0.7rem; color: var(--text-muted);
+  text-transform: uppercase; letter-spacing: 0.5px;
+}
+
+/* ===== PAYMENT ===== */
+.payment-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 12px;
+}
+.payment-card {
+  background: var(--bg-card); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 16px;
+  display: flex; align-items: center; gap: 12px;
+  transition: all var(--transition); cursor: pointer;
+}
+.payment-card:hover { border-color: var(--red); transform: translateY(-2px); }
+.payment-icon {
+  width: 44px; height: 44px; border-radius: 10px;
+  background: var(--bg-elevated);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.2rem; flex-shrink: 0;
+  border: 1px solid var(--border);
+}
+.payment-info { flex: 1; min-width: 0; }
+.payment-name { font-size: 0.82rem; font-weight: 600; margin-bottom: 2px; }
+.payment-number {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.78rem; color: var(--text-secondary);
+}
+.payment-holder { font-size: 0.68rem; color: var(--text-muted); margin-top: 2px; }
+.copy-btn {
+  width: 30px; height: 30px; border-radius: 8px;
+  background: var(--bg-elevated); border: 1px solid var(--border);
+  color: var(--text-secondary); cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: all var(--transition); flex-shrink: 0;
+}
+.copy-btn:hover { background: var(--red); color: #fff; border-color: var(--red); }
+
+/* ===== CHAT ===== */
+.chat-wrap {
+  background: var(--bg-card); border: 1px solid var(--border);
+  border-radius: var(--radius); overflow: hidden;
+  display: flex; flex-direction: column; height: 500px;
+}
+.chat-head {
+  padding: 12px 16px; border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: space-between;
+  background: var(--bg-elevated);
+}
+.chat-head-title { display: flex; align-items: center; gap: 8px; font-size: 0.82rem; font-weight: 600; }
+.chat-head-title i { color: var(--red-light); }
+.chat-online {
+  display: flex; align-items: center; gap: 6px;
+  font-size: 0.7rem; color: var(--success); font-weight: 600;
+}
+.chat-online .dot {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: var(--success); animation: pulseDot 2s infinite;
+}
+.chat-body {
+  flex: 1; overflow-y: auto; padding: 16px;
+  display: flex; flex-direction: column; gap: 10px;
+  background: var(--bg-main);
+}
+.chat-locked {
+  flex: 1; display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  padding: 40px 20px; text-align: center; gap: 14px;
+}
+.chat-locked-icon {
+  width: 72px; height: 72px; border-radius: 50%;
+  background: var(--bg-elevated); border: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.8rem; color: var(--text-muted);
+}
+.chat-locked h3 { font-size: 1rem; font-weight: 700; }
+.chat-locked p { font-size: 0.8rem; color: var(--text-secondary); max-width: 320px; }
+.chat-msg { display: flex; gap: 8px; animation: msgIn 0.25s ease; }
+@keyframes msgIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+.chat-msg.system {
+  justify-content: center; font-size: 0.68rem;
+  color: var(--text-muted); font-style: italic;
+}
+.chat-msg.system span {
+  padding: 3px 10px; background: var(--bg-elevated); border-radius: 10px;
+}
+.chat-avatar {
+  width: 30px; height: 30px; border-radius: 50%;
+  background: var(--red);
+  display: flex; align-items: center; justify-content: center;
+  color: #fff; font-size: 0.75rem; font-weight: 700;
+  flex-shrink: 0; overflow: hidden;
+}
+.chat-avatar img { width: 100%; height: 100%; object-fit: cover; }
+.chat-content { flex: 1; min-width: 0; }
+.chat-user { font-size: 0.7rem; font-weight: 600; color: var(--red-light); margin-bottom: 2px; }
+.chat-text {
+  background: var(--bg-card); padding: 8px 12px;
+  border-radius: 10px; font-size: 0.8rem;
+  word-wrap: break-word; border: 1px solid var(--border);
+  display: inline-block; max-width: 100%;
+}
+.chat-time { font-size: 0.6rem; color: var(--text-muted); margin-top: 3px; display: block; }
+.chat-input {
+  padding: 12px; border-top: 1px solid var(--border);
+  background: var(--bg-elevated); display: flex; gap: 8px;
+}
+.chat-input input {
+  flex: 1; padding: 10px 14px; border-radius: 10px;
+  border: 1px solid var(--border); background: var(--bg-main);
+  color: var(--text-primary); font-size: 0.82rem; outline: none;
+}
+.chat-input input:focus { border-color: var(--red); }
+.chat-input button {
+  padding: 0 18px; border-radius: 10px;
+  background: var(--red); color: #fff;
+  border: none; cursor: pointer; font-weight: 600; font-size: 0.82rem;
+  transition: all var(--transition);
+  display: flex; align-items: center; gap: 6px;
+}
+.chat-input button:hover { background: var(--red-light); }
+
+/* ===== GAMES ===== */
+.games-selector {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 12px;
+}
+.game-pick {
+  background: var(--bg-card); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 24px 16px;
+  text-align: center; cursor: pointer;
+  transition: all var(--transition);
+}
+.game-pick:hover { border-color: var(--red); transform: translateY(-4px); }
+.game-pick-icon { font-size: 2.5rem; margin-bottom: 10px; }
+.game-pick-name { font-size: 1rem; font-weight: 700; margin-bottom: 4px; }
+.game-pick-desc { font-size: 0.72rem; color: var(--text-muted); }
+
+.game-lobby {
+  background: var(--bg-card); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 20px;
+}
+.game-lobby-head {
+  display: flex; align-items: center; gap: 12px; margin-bottom: 16px;
+}
+.game-lobby-head h3 { font-size: 1rem; font-weight: 700; }
+.game-lobby-actions { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px; }
+.game-rooms { display: grid; gap: 8px; }
+.game-room-item {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 12px 16px; background: var(--bg-elevated);
+  border: 1px solid var(--border); border-radius: 10px;
+}
+.game-room-item:hover { border-color: var(--red); }
+.game-room-info { display: flex; flex-direction: column; gap: 2px; }
+.game-room-id {
+  font-family: 'JetBrains Mono', monospace;
+  font-weight: 700; font-size: 0.9rem; color: var(--red-light);
+}
+.game-room-host { font-size: 0.7rem; color: var(--text-muted); }
+
+.game-board-wrap {
+  background: var(--bg-card); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 20px;
+}
+.game-board-head {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 16px; flex-wrap: wrap; gap: 10px;
+}
+.game-status { font-size: 0.8rem; color: var(--text-secondary); }
+.game-turn {
+  font-size: 0.8rem; font-weight: 700;
+  color: var(--red-light); padding: 6px 14px;
+  background: var(--bg-elevated); border-radius: 20px;
+  border: 1px solid var(--border);
+}
+
+/* Tic Tac Toe */
+.ttt-board {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 8px; max-width: 360px; margin: 0 auto; aspect-ratio: 1;
+}
+.ttt-cell {
+  background: var(--bg-elevated); border: 2px solid var(--border);
+  border-radius: 12px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 3rem; font-weight: 700; cursor: pointer;
+  transition: all 0.15s; color: var(--text-primary);
+}
+.ttt-cell:hover { background: var(--bg-hover); border-color: var(--red); }
+.ttt-cell.win { background: var(--bg-hover); border-color: var(--success); }
+.ttt-cell.x { color: #60a5fa; }
+.ttt-cell.o { color: #ef4444; }
+
+/* Chess */
+.chess-board {
+  display: grid; grid-template-columns: repeat(8, 1fr);
+  max-width: 520px; margin: 0 auto; aspect-ratio: 1;
+  border: 3px solid #333; border-radius: 6px; overflow: hidden;
+  user-select: none;
+}
+.chess-square {
+  display: flex; align-items: center; justify-content: center;
+  font-size: 2.2rem; cursor: pointer;
+  transition: box-shadow 0.15s; position: relative;
+}
+.chess-square.light { background: #c8c8c8; }
+.chess-square.dark { background: #666666; }
+.chess-square:hover { box-shadow: inset 0 0 0 3px var(--red); }
+.chess-square.selected { box-shadow: inset 0 0 0 3px #60a5fa; }
+.chess-square.valid::after {
+  content: ''; position: absolute;
+  width: 22%; height: 22%; border-radius: 50%;
+  background: rgba(96,165,250,0.7);
+}
+
+/* Ludo */
+.ludo-board { max-width: 500px; margin: 0 auto; text-align: center; }
+.ludo-players {
+  display: grid; grid-template-columns: repeat(2, 1fr);
+  gap: 10px; margin-bottom: 20px;
+}
+.ludo-player {
+  padding: 12px; border-radius: 10px;
+  border: 2px solid var(--border); background: var(--bg-elevated);
+  transition: all 0.15s;
+}
+.ludo-player.active { border-color: var(--red); }
+.ludo-player-name { font-size: 0.85rem; font-weight: 700; margin-bottom: 4px; }
+.ludo-player.red .ludo-player-name { color: #ef4444; }
+.ludo-player.blue .ludo-player-name { color: #60a5fa; }
+.ludo-player.green .ludo-player-name { color: #10b981; }
+.ludo-player.yellow .ludo-player-name { color: #f59e0b; }
+.ludo-player-sub { font-size: 0.68rem; color: var(--text-muted); }
+.ludo-dice-display {
+  font-size: 3rem; padding: 12px; margin: 16px 0;
+  font-weight: 700; color: var(--red-light);
+  font-family: 'Orbitron', sans-serif;
+}
+.ludo-pieces {
+  display: flex; gap: 8px; justify-content: center;
+  margin: 16px 0; flex-wrap: wrap;
+}
+.ludo-piece {
+  width: 44px; height: 44px; border-radius: 50%;
+  background: var(--bg-elevated); border: 2px solid var(--border);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.7rem; font-weight: 700; cursor: pointer;
+  transition: all 0.15s;
+}
+.ludo-piece:hover { transform: scale(1.08); border-color: var(--red); }
+.ludo-piece.red { background: #ef4444; color: #fff; }
+.ludo-piece.blue { background: #60a5fa; color: #fff; }
+.ludo-piece.green { background: #10b981; color: #fff; }
+.ludo-piece.yellow { background: #f59e0b; color: #fff; }
+.ludo-piece.finish { box-shadow: 0 0 0 3px #fff inset; }
+#ludoRollBtn { padding: 12px 32px; font-size: 1rem; margin-top: 12px; }
+
+/* ===== PROJECTS ===== */
+.projects-actions {
+  display: flex; gap: 10px; flex-wrap: wrap;
+  margin-bottom: 16px; align-items: center;
+}
+.search-box {
+  flex: 1; min-width: 200px;
+  display: flex; align-items: center; gap: 8px;
+  padding: 8px 14px; border-radius: 10px;
+  background: var(--bg-card); border: 1px solid var(--border);
+}
+.search-box i { color: var(--text-muted); font-size: 0.8rem; }
+.search-box input {
+  flex: 1; border: none; background: transparent;
+  color: var(--text-primary); font-size: 0.8rem; outline: none;
+}
+.filter-select {
+  padding: 8px 12px; border-radius: 10px;
+  border: 1px solid var(--border); background: var(--bg-card);
+  color: var(--text-primary); font-size: 0.78rem;
+  cursor: pointer; outline: none;
+}
+.projects-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 12px;
+}
+.project-card {
+  background: var(--bg-card); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 16px;
+  display: flex; flex-direction: column;
+  transition: all var(--transition); cursor: pointer;
+}
+.project-card:hover {
+  border-color: var(--red); transform: translateY(-3px);
+}
+.project-head {
+  display: flex; align-items: center; gap: 10px; margin-bottom: 10px;
+}
+.project-author-avatar {
+  width: 32px; height: 32px; border-radius: 50%;
+  background: var(--red);
+  display: flex; align-items: center; justify-content: center;
+  color: #fff; font-size: 0.75rem; font-weight: 700;
+  overflow: hidden; flex-shrink: 0;
+}
+.project-author-avatar img { width: 100%; height: 100%; object-fit: cover; }
+.project-author { font-size: 0.72rem; color: var(--text-secondary); }
+.project-author-name { font-weight: 600; color: var(--text-primary); }
+.project-type-badge {
+  display: inline-flex; align-items: center;
+  padding: 3px 8px; border-radius: 8px;
+  font-size: 0.6rem; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 0.5px;
+  margin-left: auto;
+}
+.project-type-badge.tool { background: rgba(16,185,129,0.15); color: var(--success); }
+.project-type-badge.script { background: rgba(245,158,11,0.15); color: var(--warning); }
+.project-type-badge.website { background: rgba(45,95,158,0.2); color: var(--blue-light); }
+.project-type-badge.bot { background: rgba(201,42,42,0.15); color: var(--red-light); }
+.project-type-badge.other { background: var(--bg-elevated); color: var(--text-muted); }
+.project-title {
+  font-size: 0.92rem; font-weight: 700;
+  margin-bottom: 6px; line-height: 1.3;
+}
+.project-desc {
+  font-size: 0.75rem; color: var(--text-secondary);
+  line-height: 1.5; margin-bottom: 10px;
+  display: -webkit-box; -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical; overflow: hidden;
+}
+.project-tags { display: flex; flex-wrap: wrap; gap: 4px; margin-bottom: 10px; }
+.project-tag {
+  padding: 2px 8px; border-radius: 6px;
+  background: var(--bg-elevated); border: 1px solid var(--border);
+  font-size: 0.62rem; color: var(--text-secondary);
+}
+.project-stats {
+  display: flex; gap: 12px; padding-top: 10px;
+  border-top: 1px solid var(--border);
+  font-size: 0.68rem; color: var(--text-muted);
+  margin-top: auto;
+}
+.project-stats span { display: flex; align-items: center; gap: 4px; }
+.project-stats i { color: var(--red-light); }
+.projects-empty {
+  grid-column: 1 / -1; text-align: center;
+  padding: 40px 20px; color: var(--text-muted);
+}
+.projects-empty i { font-size: 2.5rem; margin-bottom: 12px; opacity: 0.4; }
+
+/* ===== SERVER ===== */
+.server-wrap {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 12px;
+}
+.server-card {
+  background: var(--bg-card); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 16px;
+  transition: all var(--transition);
+}
+.server-card:hover { border-color: var(--border-light); transform: translateY(-2px); }
+.server-head {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 12px;
+}
+.server-name { font-size: 0.85rem; font-weight: 600; display: flex; align-items: center; gap: 8px; }
+.server-status {
+  display: inline-flex; align-items: center; gap: 5px;
+  padding: 3px 10px; border-radius: 10px;
+  font-size: 0.65rem; font-weight: 600;
+  text-transform: uppercase; letter-spacing: 0.5px;
+}
+.server-status.online { background: rgba(16,185,129,0.1); color: var(--success); }
+.server-status.offline { background: rgba(239,68,68,0.1); color: var(--error); }
+.server-status .dot { width: 5px; height: 5px; border-radius: 50%; background: currentColor; }
+.server-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+.server-stat {
+  text-align: center; padding: 8px;
+  background: var(--bg-elevated); border-radius: 8px;
+  border: 1px solid var(--border);
+}
+.server-stat-val { font-size: 0.85rem; font-weight: 700; font-family: 'Orbitron', sans-serif; }
+.server-stat-label {
+  font-size: 0.6rem; color: var(--text-muted);
+  text-transform: uppercase; letter-spacing: 0.3px; margin-top: 2px;
+}
+
+/* ===== TOOLS ===== */
+.tools-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 10px;
+}
+.tool-card {
+  background: var(--bg-card); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 16px;
+  text-align: center; cursor: pointer;
+  transition: all var(--transition);
+  text-decoration: none; color: inherit;
+}
+.tool-card:hover { border-color: var(--red); transform: translateY(-3px); }
+.tool-icon {
+  width: 44px; height: 44px; margin: 0 auto 10px;
+  border-radius: 10px; background: var(--bg-elevated);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.1rem; color: var(--red-light);
+  border: 1px solid var(--border);
+}
+.tool-card:hover .tool-icon { background: var(--red); color: #fff; }
+.tool-name { font-size: 0.8rem; font-weight: 600; margin-bottom: 3px; }
+.tool-desc { font-size: 0.68rem; color: var(--text-muted); }
+
+/* ===== UPLOAD ===== */
+.upload-wrap {
+  background: var(--bg-card); border: 2px dashed var(--border-light);
+  border-radius: var(--radius); padding: 32px 20px;
+  text-align: center; cursor: pointer;
+  transition: all var(--transition);
+}
+.upload-wrap:hover, .upload-wrap.dragover {
+  border-color: var(--red); background: rgba(201,42,42,0.03);
+}
+.upload-icon {
+  width: 60px; height: 60px; margin: 0 auto 12px;
+  border-radius: 50%; background: var(--bg-elevated);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.5rem; color: var(--red-light);
+  border: 1px solid var(--border);
+}
+.upload-title { font-size: 0.9rem; font-weight: 600; margin-bottom: 4px; }
+.upload-desc { font-size: 0.72rem; color: var(--text-muted); }
+.upload-preview { margin-top: 16px; display: none; }
+.upload-preview.active { display: block; }
+.preview-item {
+  padding: 10px 14px; background: var(--bg-elevated);
+  border-radius: 10px; border: 1px solid var(--border);
+  display: flex; align-items: center; gap: 12px; margin-top: 8px;
+}
+.preview-thumb {
+  width: 44px; height: 44px; border-radius: 8px;
+  object-fit: cover; background: var(--bg-main); flex-shrink: 0;
+}
+.preview-info { flex: 1; min-width: 0; }
+.preview-name {
+  font-size: 0.78rem; font-weight: 600;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.preview-size { font-size: 0.68rem; color: var(--text-muted); }
+
+/* ===== MODAL ===== */
+.modal {
+  display: none; position: fixed; inset: 0; z-index: 1000;
+  background: rgba(0,0,0,0.7); backdrop-filter: blur(8px);
+  align-items: center; justify-content: center; padding: 20px;
+}
+.modal.active { display: flex; }
+.modal-box {
+  background: var(--bg-card); border: 1px solid var(--border);
+  border-radius: var(--radius); max-width: 500px; width: 100%;
+  max-height: 90vh; overflow-y: auto;
+  animation: modalIn 0.25s ease;
+}
+@keyframes modalIn {
+  from { opacity: 0; transform: scale(0.96) translateY(12px); }
+  to { opacity: 1; transform: scale(1) translateY(0); }
+}
+.modal-head {
+  padding: 16px 20px; border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: space-between;
+}
+.modal-head h3 { font-size: 1rem; font-weight: 700; }
+.modal-close {
+  width: 30px; height: 30px; border-radius: 8px;
+  background: var(--bg-elevated); border: 1px solid var(--border);
+  color: var(--text-secondary); cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: all var(--transition);
+}
+.modal-close:hover { background: var(--error); color: #fff; border-color: var(--error); }
+.modal-body { padding: 20px; }
+.modal-foot {
+  padding: 14px 20px; border-top: 1px solid var(--border);
+  display: flex; gap: 8px; justify-content: flex-end;
+}
+
+/* ===== FORM ===== */
+.form-group { margin-bottom: 14px; }
+.form-label {
+  display: block; font-size: 0.72rem; font-weight: 600;
+  color: var(--text-secondary); margin-bottom: 6px;
+  text-transform: uppercase; letter-spacing: 0.5px;
+}
+.form-input, .form-textarea, .form-select {
+  width: 100%; padding: 10px 14px;
+  border-radius: 10px; border: 1px solid var(--border);
+  background: var(--bg-main); color: var(--text-primary);
+  font-size: 0.82rem; outline: none;
+  transition: all var(--transition); font-family: inherit;
+}
+.form-input:focus, .form-textarea:focus, .form-select:focus {
+  border-color: var(--red);
+}
+.form-textarea { resize: vertical; min-height: 80px; }
+.form-hint { font-size: 0.65rem; color: var(--text-muted); margin-top: 4px; }
+.form-error {
+  color: var(--error); font-size: 0.72rem;
+  margin-bottom: 10px; display: none;
+  padding: 8px 12px; background: rgba(239,68,68,0.1);
+  border: 1px solid rgba(239,68,68,0.3); border-radius: 8px;
+}
+.form-error.show { display: block; }
+
+/* ===== TOAST ===== */
+.toast {
+  position: fixed; bottom: 24px; right: 24px;
+  padding: 12px 18px; border-radius: 10px;
+  background: var(--bg-elevated); border: 1px solid var(--border);
+  display: flex; align-items: center; gap: 10px;
+  font-size: 0.8rem; font-weight: 500;
+  transform: translateY(120px); opacity: 0;
+  transition: all 0.35s ease;
+  max-width: 340px; z-index: 10000;
+}
+.toast.show { transform: translateY(0); opacity: 1; }
+.toast i { font-size: 1rem; color: var(--success); }
+.toast.error i { color: var(--error); }
+.toast.info i { color: var(--blue-light); }
+
+/* ===== FOOTER ===== */
+footer {
+  border-top: 1px solid var(--border);
+  padding: 24px 0; margin-top: 40px;
+}
+.footer-inner {
+  display: flex; flex-wrap: wrap;
+  justify-content: space-between; align-items: center;
+  gap: 16px; font-size: 0.72rem; color: var(--text-muted);
+}
+.footer-links { display: flex; gap: 16px; }
+.footer-links a { color: var(--text-muted); text-decoration: none; transition: color var(--transition); }
+.footer-links a:hover { color: var(--red-light); }
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 1024px) {
+  .sidebar { transform: translateX(-100%); }
+  .sidebar.open { transform: translateX(0); box-shadow: 0 0 60px rgba(0,0,0,0.6); }
+  .sidebar-close-btn { display: flex; }
+  #app { padding-left: 0 !important; }
+  .topbar { display: flex; }
+}
+
+@media (max-width: 768px) {
+  html { font-size: 13px; }
+  .chat-wrap { height: 420px; }
+  .stat-value { font-size: 1.3rem; }
+}
+
+@media (max-width: 400px) {
+  .container { padding: 0 12px; }
+  .chat-wrap { height: 380px; }
+  .hero h1 { font-size: 1.4rem; }
+  .stat-value { font-size: 1.1rem; }
+  .stat-card { padding: 12px; }
+  .sidebar { width: 240px; }
+}
+</style>
+</head>
+<body>
+
+<!-- WELCOME -->
+<div id="welcomeScreen">
+  <div class="welcome-content">
+    <div class="spider-logo"><i class="fas fa-spider"></i></div>
+    <div class="welcome-title"><span id="typedText"></span><span class="cursor"></span></div>
+    <div class="welcome-sub">ZIROWR STORE OFFICIAL</div>
+    <div class="welcome-bar"><div class="welcome-bar-fill" id="welcomeBar"></div></div>
+  </div>
+</div>
+
+<!-- APP -->
+<div id="app">
+
+  <!-- TOPBAR -->
+  <header class="topbar">
+    <button class="sidebar-toggle" onclick="toggleSidebar()"><i class="fas fa-bars"></i></button>
+    <div class="topbar-title">
+      <div class="topbar-logo-icon"><i class="fas fa-spider"></i></div>
+      <span>ZIROWR</span>
+    </div>
+    <div class="topbar-actions" id="topbarAuthArea"></div>
+  </header>
+
+  <!-- SIDEBAR -->
+  <div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-head">
+      <div class="sidebar-logo">
+        <div class="sidebar-logo-icon"><i class="fas fa-spider"></i></div>
+        <div class="sidebar-logo-text">
+          ZIROWR STORE
+          <small>OFFICIAL</small>
+        </div>
+      </div>
+      <button class="sidebar-close-btn" onclick="closeSidebar()"><i class="fas fa-times"></i></button>
+    </div>
+
+    <div class="sidebar-user" id="sidebarUser"></div>
+
+    <nav class="sidebar-nav">
+      <div class="sidebar-section">Menu Utama</div>
+      <a href="#dashboard" class="sidebar-link active" data-target="dashboard"><i class="fas fa-chart-line"></i> <span>Dashboard</span></a>
+      <a href="#payment" class="sidebar-link" data-target="payment"><i class="fas fa-wallet"></i> <span>Pembayaran</span></a>
+      <a href="#chat" class="sidebar-link" data-target="chat"><i class="fas fa-comments"></i> <span>Global Chat</span></a>
+      <a href="#games" class="sidebar-link" data-target="games"><i class="fas fa-gamepad"></i> <span>Game Zone</span></a>
+      <a href="#projects" class="sidebar-link" data-target="projects"><i class="fas fa-share-alt"></i> <span>Tools Share</span></a>
+
+      <div class="sidebar-section">Lainnya</div>
+      <a href="#server" class="sidebar-link" data-target="server"><i class="fas fa-server"></i> <span>Server</span></a>
+      <a href="#upload" class="sidebar-link" data-target="upload"><i class="fas fa-cloud-upload-alt"></i> <span>Upload</span></a>
+      <a href="#tools" class="sidebar-link" data-target="tools"><i class="fas fa-toolbox"></i> <span>Tools</span></a>
+    </nav>
+
+    <div class="sidebar-foot">
+      <div class="sidebar-status">
+        <span class="dot"></span>
+        <span id="sidebarOnline">0</span> Online
+      </div>
+    </div>
+  </aside>
+
+  <div class="container">
+
+    <!-- HERO -->
+    <section class="hero">
+      <div class="hero-badge"><i class="fas fa-spider"></i> SPIDER THEME</div>
+      <h1>ZIROWR STORE</h1>
+      <p>Platform official dengan dashboard real-time, global chat, game zone, share tools & source code, dan berbagai fitur premium.</p>
+      <div class="hero-buttons">
+        <a href="#projects" class="btn btn-primary"><i class="fas fa-share-alt"></i> Jelajahi Karya</a>
+        <a href="#games" class="btn btn-secondary"><i class="fas fa-gamepad"></i> Main Game</a>
+      </div>
+    </section>
+
+    <!-- DASHBOARD -->
+    <section class="section" id="dashboard">
+      <div class="section-header">
+        <div>
+          <h2 class="section-title"><i class="fas fa-chart-line"></i> Dashboard Real-Time</h2>
+          <p class="section-sub">Data live dari server, update tiap 5 detik</p>
+        </div>
+        <span class="stat-live"><i class="fas fa-circle" style="font-size:5px;"></i> LIVE</span>
+      </div>
+      <div class="section-desc">
+        Pantau statistik pengunjung, user online, dan aktivitas komunitas ZIROWR STORE secara real-time. Semua data diperbarui otomatis tanpa perlu refresh halaman.
+      </div>
+      <div class="dash-grid">
+        <div class="stat-card">
+          <div class="stat-head">
+            <div class="stat-icon"><i class="fas fa-users"></i></div>
+            <span class="stat-live">LIVE</span>
+          </div>
+          <div class="stat-value" id="statOnline">0</div>
+          <div class="stat-label">User Online</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-head"><div class="stat-icon"><i class="fas fa-eye"></i></div></div>
+          <div class="stat-value" id="statVisitors">0</div>
+          <div class="stat-label">Total Pengunjung</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-head"><div class="stat-icon"><i class="fas fa-user-check"></i></div></div>
+          <div class="stat-value" id="statUsers">0</div>
+          <div class="stat-label">Total User</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-head"><div class="stat-icon"><i class="fas fa-share-alt"></i></div></div>
+          <div class="stat-value" id="statProjects">0</div>
+          <div class="stat-label">Karya Dibagikan</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PAYMENT -->
+    <section class="section" id="payment">
+      <div class="section-header">
+        <div>
+          <h2 class="section-title"><i class="fas fa-wallet"></i> Metode Pembayaran</h2>
+          <p class="section-sub">Klik kartu untuk menyalin nomor</p>
+        </div>
+      </div>
+      <div class="section-desc">
+        Kami menerima pembayaran melalui DANA, GoPay, dan SeaBank. Klik salah satu kartu di bawah untuk menyalin nomor tujuan secara otomatis.
+      </div>
+      <div class="payment-grid" id="paymentGrid"></div>
+    </section>
+
+    <!-- CHAT -->
+    <section class="section" id="chat">
+      <div class="section-header">
+        <div>
+          <h2 class="section-title"><i class="fas fa-comments"></i> Global Chat</h2>
+          <p class="section-sub">Ruang ngobrol publik komunitas ZIROWR</p>
+        </div>
+      </div>
+      <div class="section-desc">
+        Ngobrol santai dengan semua pengunjung yang sedang online. Anda harus login terlebih dahulu untuk bisa mengirim pesan. Chat akan hilang setelah 500 pesan terakhir.
+      </div>
+      <div class="chat-wrap">
+        <div class="chat-head">
+          <div class="chat-head-title"><i class="fas fa-globe"></i> Ruang Publik</div>
+          <div class="chat-online">
+            <span class="dot"></span>
+            <span id="chatOnline">0</span> online
+          </div>
+        </div>
+        <div class="chat-locked" id="chatLocked">
+          <div class="chat-locked-icon"><i class="fas fa-user-lock"></i></div>
+          <h3>Login Diperlukan</h3>
+          <p>Untuk mengakses global chat, Anda harus membuat profil terlebih dahulu.</p>
+          <div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:center;">
+            <button class="btn btn-primary" onclick="openAuth('register')"><i class="fas fa-user-plus"></i> Buat Profil</button>
+            <button class="btn btn-secondary" onclick="openAuth('login')"><i class="fas fa-sign-in-alt"></i> Login</button>
+          </div>
+        </div>
+        <div class="chat-body" id="chatBody" style="display:none;"></div>
+        <div class="chat-input" id="chatInputWrap" style="display:none;">
+          <input type="text" id="chatInput" placeholder="Tulis pesan..." maxlength="500" onkeydown="if(event.key==='Enter') sendChat()">
+          <button onclick="sendChat()"><i class="fas fa-paper-plane"></i> Kirim</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- GAMES -->
+    <section class="section" id="games">
+      <div class="section-header">
+        <div>
+          <h2 class="section-title"><i class="fas fa-gamepad"></i> Game Zone</h2>
+          <p class="section-sub">Main bareng teman atau lawan AI</p>
+        </div>
+      </div>
+      <div class="section-desc">
+        Main game klasik dengan dua mode: <b>Multiplayer</b> (buat room, share ID ke teman) atau <b>vs AI</b> (langsung main tanpa teman). AI sudah dilatih dengan algoritma minimax untuk Catur.
+      </div>
+
+      <div class="games-selector" id="gamesSelector">
+        <div class="game-pick" onclick="openGameLobby('chess')">
+          <div class="game-pick-icon">♟️</div>
+          <div class="game-pick-name">Catur</div>
+          <div class="game-pick-desc">Strategi klasik vs AI Minimax</div>
+        </div>
+        <div class="game-pick" onclick="openGameLobby('ludo')">
+          <div class="game-pick-icon">🎲</div>
+          <div class="game-pick-name">Ludo</div>
+          <div class="game-pick-desc">4 pemain / lawan AI</div>
+        </div>
+        <div class="game-pick" onclick="openGameLobby('tictactoe')">
+          <div class="game-pick-icon">⭕</div>
+          <div class="game-pick-name">Tic Tac Toe</div>
+          <div class="game-pick-desc">Cepat & seru, AI cerdas</div>
+        </div>
+      </div>
+
+      <div class="game-lobby" id="gameLobby" style="display:none;">
+        <div class="game-lobby-head">
+          <button class="btn btn-secondary" onclick="backToGameSelect()"><i class="fas fa-arrow-left"></i> Kembali</button>
+          <h3 id="gameLobbyTitle">Lobby</h3>
+        </div>
+        <div class="game-lobby-actions">
+          <button class="btn btn-primary" onclick="createRoom()"><i class="fas fa-plus"></i> Buat Room</button>
+          <button class="btn btn-secondary" onclick="playVsAI()"><i class="fas fa-robot"></i> Lawan AI</button>
+          <button class="btn btn-secondary" onclick="refreshRooms()"><i class="fas fa-sync"></i> Refresh</button>
+        </div>
+        <div class="game-rooms" id="gameRooms">
+          <p style="color:var(--text-muted);font-size:0.8rem;text-align:center;padding:20px;">Belum ada room. Buat room baru atau refresh.</p>
+        </div>
+      </div>
+
+      <div class="game-board-wrap" id="gameBoardWrap" style="display:none;">
+        <div class="game-board-head">
+          <button class="btn btn-secondary" onclick="leaveGame()"><i class="fas fa-arrow-left"></i> Keluar</button>
+          <div class="game-status" id="gameStatus">—</div>
+          <div class="game-turn" id="gameTurn">—</div>
+        </div>
+        <div id="tttBoard" class="ttt-board" style="display:none;"></div>
+        <div id="chessBoard" class="chess-board" style="display:none;"></div>
+        <div id="ludoBoard" class="ludo-board" style="display:none;">
+          <div class="ludo-players" id="ludoPlayers"></div>
+          <div class="ludo-dice-display" id="ludoDice">🎲</div>
+          <button class="btn btn-primary" id="ludoRollBtn" onclick="rollLudoDice()">Roll Dadu</button>
+          <div class="ludo-pieces" id="ludoPieces"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PROJECTS -->
+    <section class="section" id="projects">
+      <div class="section-header">
+        <div>
+          <h2 class="section-title"><i class="fas fa-share-alt"></i> Share Tools & Source Code</h2>
+          <p class="section-sub">Karya dari komunitas ZIROWR STORE</p>
+        </div>
+        <button class="btn btn-primary" onclick="openShareModal()"><i class="fas fa-plus-circle"></i> Bagikan</button>
+      </div>
+      <div class="section-desc">
+        Bagikan tools, script, website, atau bot buatan Anda. Sertakan source code, demo URL, dan file untuk diunduh. Setiap karya yang dibagikan akan menambah reputasi Anda.
+      </div>
+
+      <div class="projects-actions">
+        <div class="search-box">
+          <i class="fas fa-search"></i>
+          <input type="text" id="projectSearch" placeholder="Cari tools, script, atau tag..." oninput="loadProjects()">
+        </div>
+        <select class="filter-select" id="projectType" onchange="loadProjects()">
+          <option value="all">Semua Tipe</option>
+          <option value="tool">Tool</option>
+          <option value="script">Script</option>
+          <option value="website">Website</option>
+          <option value="bot">Bot</option>
+          <option value="other">Lainnya</option>
+        </select>
+        <select class="filter-select" id="projectSort" onchange="loadProjects()">
+          <option value="recent">Terbaru</option>
+          <option value="popular">Terpopuler</option>
+          <option value="downloads">Terbanyak Diunduh</option>
+        </select>
+      </div>
+
+      <div class="projects-grid" id="projectsGrid"></div>
+    </section>
+
+    <!-- SERVER -->
+    <section class="section" id="server">
+      <div class="section-header">
+        <div>
+          <h2 class="section-title"><i class="fas fa-server"></i> Status Server</h2>
+          <p class="section-sub">Powered by Pterodactyl Panel</p>
+        </div>
+      </div>
+      <div class="section-desc">
+        Status server yang dikelola melalui Pterodactyl Panel. Akan menampilkan status online/offline beserta penggunaan CPU, RAM, dan disk setiap server.
+      </div>
+      <div class="server-wrap" id="serverWrap">
+        <div class="server-card">
+          <div class="server-head">
+            <div class="server-name"><i class="fas fa-server"></i> Loading...</div>
+          </div>
+          <div class="server-stats">
+            <div class="server-stat"><div class="server-stat-val">-</div><div class="server-stat-label">CPU</div></div>
+            <div class="server-stat"><div class="server-stat-val">-</div><div class="server-stat-label">RAM</div></div>
+            <div class="server-stat"><div class="server-stat-val">-</div><div class="server-stat-label">Disk</div></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TOOLS -->
+    <section class="section" id="tools">
+      <div class="section-header">
+        <div>
+          <h2 class="section-title"><i class="fas fa-toolbox"></i> Tools Berguna</h2>
+          <p class="section-sub">Kumpulan link dan shortcut</p>
+        </div>
+      </div>
+      <div class="tools-grid">
+        <a class="tool-card" href="https://wa.me/6285169196159" target="_blank" rel="noopener">
+          <div class="tool-icon"><i class="fab fa-whatsapp"></i></div>
+          <div class="tool-name">WhatsApp</div>
+          <div class="tool-desc">Hubungi kami</div>
+        </a>
+        <a class="tool-card" href="https://zirowr.vercel.app" target="_blank" rel="noopener">
+          <div class="tool-icon"><i class="fas fa-globe"></i></div>
+          <div class="tool-name">Website</div>
+          <div class="tool-desc">Official site</div>
+        </a>
+        <a class="tool-card" href="https://zirowrstore.my.id" target="_blank" rel="noopener">
+          <div class="tool-icon"><i class="fas fa-gamepad"></i></div>
+          <div class="tool-name">Top Up Game</div>
+          <div class="tool-desc">All game</div>
+        </a>
+        <a class="tool-card" href="https://hazimgustia.my.id" target="_blank" rel="noopener">
+          <div class="tool-icon"><i class="fas fa-code"></i></div>
+          <div class="tool-name">Developer</div>
+          <div class="tool-desc">Portfolio</div>
+        </a>
+        <div class="tool-card" onclick="scrollTo('upload')">
+          <div class="tool-icon"><i class="fas fa-cloud-upload-alt"></i></div>
+          <div class="tool-name">Upload</div>
+          <div class="tool-desc">Foto & video</div>
+        </div>
+        <div class="tool-card" onclick="scrollTo('payment')">
+          <div class="tool-icon"><i class="fas fa-wallet"></i></div>
+          <div class="tool-name">Bayar</div>
+          <div class="tool-desc">E-wallet/Bank</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- UPLOAD -->
+    <section class="section" id="upload">
+      <div class="section-header">
+        <div>
+          <h2 class="section-title"><i class="fas fa-cloud-upload-alt"></i> Upload File</h2>
+          <p class="section-sub">Max 50MB per file</p>
+        </div>
+      </div>
+      <div class="section-desc">
+        Upload gambar, video, ZIP, PDF, atau file kode. Klik area di bawah atau drag file ke sini. File akan disimpan dan bisa diakses langsung via URL.
+      </div>
+      <div class="upload-wrap" id="uploadArea" onclick="document.getElementById('fileInput').click()">
+        <div class="upload-icon"><i class="fas fa-cloud-upload-alt"></i></div>
+        <div class="upload-title">Klik atau Drag file di sini</div>
+        <div class="upload-desc">Support: gambar, video, zip, rar, pdf, txt, js, json, html, css, md</div>
+        <input type="file" id="fileInput" style="display:none;" accept="image/*,video/*,.zip,.rar,.7z,.pdf,.txt,.js,.json,.html,.css,.md" onchange="handleUpload(event)">
+      </div>
+      <div class="upload-preview" id="uploadPreview"></div>
+    </section>
+
+  </div>
+
+  <footer>
+    <div class="container">
+      <div class="footer-inner">
+        <div>© 2026 ZIROWR STORE — All rights reserved</div>
+        <div class="footer-links">
+          <a href="#dashboard">Dashboard</a>
+          <a href="#payment">Payment</a>
+          <a href="#chat">Chat</a>
+          <a href="#games">Games</a>
+          <a href="#projects">Tools</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+</div>
+
+<!-- AUTH MODAL -->
+<div class="modal" id="authModal">
+  <div class="modal-box">
+    <div class="modal-head">
+      <h3 id="authTitle">Masuk</h3>
+      <button class="modal-close" onclick="closeModal('authModal')"><i class="fas fa-times"></i></button>
+    </div>
+    <div class="modal-body">
+      <div id="authError" class="form-error"></div>
+
+      <div id="loginForm">
+        <div class="form-group">
+          <label class="form-label">Email atau Username</label>
+          <input type="text" class="form-input" id="loginEmail" placeholder="email@example.com">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Password</label>
+          <input type="password" class="form-input" id="loginPassword" placeholder="••••••••">
+        </div>
+        <button class="btn btn-primary" style="width:100%;justify-content:center;" onclick="doLogin()">
+          <i class="fas fa-sign-in-alt"></i> Masuk
+        </button>
+        <p style="text-align:center;font-size:0.75rem;color:var(--text-muted);margin-top:14px;">
+          Belum punya akun? <a href="#" onclick="event.preventDefault();switchAuth('register')" style="color:var(--red-light);font-weight:600;">Buat Profil</a>
+        </p>
+      </div>
+
+      <div id="registerForm" style="display:none;">
+        <div class="form-group">
+          <label class="form-label">Username</label>
+          <input type="text" class="form-input" id="regUsername" placeholder="zirowr_user" maxlength="20">
+          <div class="form-hint">3-20 karakter, huruf/angka/underscore</div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Email</label>
+          <input type="email" class="form-input" id="regEmail" placeholder="email@example.com">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Password</label>
+          <input type="password" class="form-input" id="regPassword" placeholder="Min. 6 karakter">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Bio (opsional)</label>
+          <textarea class="form-textarea" id="regBio" placeholder="Ceritakan tentang Anda..." maxlength="200"></textarea>
+        </div>
+        <button class="btn btn-primary" style="width:100%;justify-content:center;" onclick="doRegister()">
+          <i class="fas fa-user-plus"></i> Buat Profil
+        </button>
+        <p style="text-align:center;font-size:0.75rem;color:var(--text-muted);margin-top:14px;">
+          Sudah punya akun? <a href="#" onclick="event.preventDefault();switchAuth('login')" style="color:var(--red-light);font-weight:600;">Masuk</a>
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SHARE MODAL -->
+<div class="modal" id="shareModal">
+  <div class="modal-box" style="max-width:600px;">
+    <div class="modal-head">
+      <h3><i class="fas fa-share-alt"></i> Bagikan Karya</h3>
+      <button class="modal-close" onclick="closeModal('shareModal')"><i class="fas fa-times"></i></button>
+    </div>
+    <div class="modal-body">
+      <div id="shareError" class="form-error"></div>
+
+      <div class="form-group">
+        <label class="form-label">Judul Karya *</label>
+        <input type="text" class="form-input" id="projTitle" placeholder="Contoh: Discord Bot Auto Reply" maxlength="100">
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Deskripsi *</label>
+        <textarea class="form-textarea" id="projDesc" placeholder="Jelaskan fungsi, cara pakai, dan fitur utama..." maxlength="2000"></textarea>
+      </div>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+        <div class="form-group">
+          <label class="form-label">Tipe</label>
+          <select class="form-select" id="projType">
+            <option value="tool">Tool</option>
+            <option value="script">Script</option>
+            <option value="website">Website</option>
+            <option value="bot">Bot</option>
+            <option value="other">Lainnya</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Bahasa</label>
+          <select class="form-select" id="projLang">
+            <option value="javascript">JavaScript</option>
+            <option value="python">Python</option>
+            <option value="php">PHP</option>
+            <option value="html">HTML/CSS</option>
+            <option value="java">Java</option>
+            <option value="cpp">C++</option>
+            <option value="other">Lainnya</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Tags (pisahkan dengan koma)</label>
+        <input type="text" class="form-input" id="projTags" placeholder="discord, bot, auto-reply">
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">URL Demo (opsional)</label>
+        <input type="url" class="form-input" id="projDemo" placeholder="https://demo.example.com">
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Source Code (opsional)</label>
+        <textarea class="form-textarea" id="projCode" placeholder="Paste source code di sini..." style="font-family:'JetBrains Mono',monospace;font-size:0.75rem;min-height:140px;"></textarea>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Upload File (opsional, max 50MB)</label>
+        <input type="file" id="projFile" class="form-input" style="padding:8px;">
+      </div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn-secondary" onclick="closeModal('shareModal')">Batal</button>
+      <button class="btn btn-primary" id="shareSubmitBtn" onclick="submitProject()"><i class="fas fa-paper-plane"></i> Bagikan</button>
+    </div>
+  </div>
+</div>
+
+<!-- DETAIL MODAL -->
+<div class="modal" id="detailModal">
+  <div class="modal-box" style="max-width:700px;">
+    <div class="modal-head">
+      <h3 id="detailTitle">Detail Karya</h3>
+      <button class="modal-close" onclick="closeModal('detailModal')"><i class="fas fa-times"></i></button>
+    </div>
+    <div class="modal-body" id="detailBody"></div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast">
+  <i class="fas fa-check-circle"></i>
+  <span id="toastMsg">Berhasil!</span>
+</div>
+
+<script src="/socket.io/socket.io.js"></script>
+<script>
+// ============================================================
+// STATE
+// ============================================================
+const API = window.location.origin + '/api';
+let token = localStorage.getItem('token') || null;
+let currentUser = null;
+let socket = null;
+let socketInitialized = false;
+
+// ============================================================
+// WELCOME
+// ============================================================
+(function initWelcome() {
+  const text = "WELCOME TO ZIROWR STORE";
+  const typedEl = document.getElementById('typedText');
+  const barEl = document.getElementById('welcomeBar');
+  const welcome = document.getElementById('welcomeScreen');
+  const app = document.getElementById('app');
+  let i = 0, progress = 0;
+
+  function typeChar() {
+    if (i < text.length) {
+      typedEl.textContent += text.charAt(i);
+      i++;
+      setTimeout(typeChar, 70 + Math.random() * 40);
+    }
+  }
+
+  const interval = setInterval(() => {
+    progress += Math.random() * 12;
+    if (progress >= 100) { progress = 100; clearInterval(interval); }
+    barEl.style.width = progress + '%';
+  }, 180);
+
+  setTimeout(typeChar, 300);
+  setTimeout(() => {
+    barEl.style.width = '100%';
+    setTimeout(() => {
+      welcome.classList.add('hidden');
+      app.classList.add('visible');
+      setTimeout(() => { welcome.style.display = 'none'; }, 600);
+    }, 400);
+  }, 3000);
+})();
+
+// ============================================================
+// HELPERS
+// ============================================================
+function escapeHtml(text) {
+  if (!text) return '';
+  const div = document.createElement('div');
+  div.textContent = text;
+  return div.innerHTML;
+}
+
+let toastTimeout;
+function showToast(msg, type = 'success') {
+  const toast = document.getElementById('toast');
+  const toastMsg = document.getElementById('toastMsg');
+  const icon = toast.querySelector('i');
+  toastMsg.textContent = msg;
+  toast.className = 'toast ' + type;
+  icon.className = type === 'error' ? 'fas fa-exclamation-circle'
+    : type === 'info' ? 'fas fa-info-circle'
+    : 'fas fa-check-circle';
+  toast.classList.add('show');
+  clearTimeout(toastTimeout);
+  toastTimeout = setTimeout(() => toast.classList.remove('show'), 3000);
+}
+
+function scrollTo(id) {
+  const el = document.getElementById(id);
+  if (el) {
+    const offset = window.innerWidth <= 1024 ? 70 : 20;
+    const top = el.getBoundingClientRect().top + window.pageYOffset - offset;
+    window.scrollTo({ top, behavior: 'smooth' });
+  }
+}
+
+function openModal(id) { document.getElementById(id).classList.add('active'); }
+function closeModal(id) { document.getElementById(id).classList.remove('active'); }
+
+document.querySelectorAll('.modal').forEach(m => {
+  m.addEventListener('click', e => { if (e.target === m) m.classList.remove('active'); });
+});
+
+function authHeaders() {
+  return token ? { 'Authorization': 'Bearer ' + token } : {};
+}
+
+// ============================================================
+// SIDEBAR
+// ============================================================
+function toggleSidebar() {
+  const sidebar = document.getElementById('sidebar');
+  const overlay = document.getElementById('sidebarOverlay');
+  const isMobile = window.innerWidth <= 1024;
+
+  if (isMobile) {
+    sidebar.classList.toggle('open');
+    overlay.classList.toggle('active');
+  } else {
+    document.body.classList.toggle('sidebar-collapsed');
+  }
+}
+
+function openSidebar() {
+  document.getElementById('sidebar').classList.add('open');
+  document.getElementById('sidebarOverlay').classList.add('active');
+}
+
+function closeSidebar() {
+  document.getElementById('sidebar').classList.remove('open');
+  document.getElementById('sidebarOverlay').classList.remove('active');
+}
+
+document.querySelectorAll('.sidebar-link').forEach(link => {
+  link.addEventListener('click', (e) => {
+    const target = link.getAttribute('data-target');
+    if (target) {
+      e.preventDefault();
+      scrollTo(target);
+      document.querySelectorAll('.sidebar-link').forEach(l => l.classList.remove('active'));
+      link.classList.add('active');
+      if (window.innerWidth <= 1024) closeSidebar();
+    }
+  });
+});
+
+// Update active saat scroll
+window.addEventListener('scroll', () => {
+  const sections = ['dashboard', 'payment', 'chat', 'games', 'projects', 'server', 'upload', 'tools'];
+  let current = 'dashboard';
+  sections.forEach(id => {
+    const el = document.getElementById(id);
+    if (el && el.getBoundingClientRect().top <= 150) current = id;
+  });
+  document.querySelectorAll('.sidebar-link').forEach(link => {
+    link.classList.toggle('active', link.getAttribute('data-target') === current);
+  });
+});
+
+document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeSidebar(); });
+
+window.addEventListener('resize', () => {
+  if (window.innerWidth > 1024) {
+    closeSidebar();
+    document.body.classList.remove('sidebar-collapsed');
+  }
+});
+
+// ============================================================
+// AUTH
+// ============================================================
+function openAuth(mode = 'login') {
+  switchAuth(mode);
+  openModal('authModal');
+}
+
+function switchAuth(mode) {
+  const loginForm = document.getElementById('loginForm');
+  const registerForm = document.getElementById('registerForm');
+  const title = document.getElementById('authTitle');
+  const err = document.getElementById('authError');
+  err.classList.remove('show');
+  if (mode === 'register') {
+    loginForm.style.display = 'none';
+    registerForm.style.display = 'block';
+    title.textContent = 'Buat Profil';
+  } else {
+    loginForm.style.display = 'block';
+    registerForm.style.display = 'none';
+    title.textContent = 'Masuk';
+  }
+}
+
+async function doLogin() {
+  const email = document.getElementById('loginEmail').value.trim();
+  const password = document.getElementById('loginPassword').value;
+  const errEl = document.getElementById('authError');
+
+  if (!email || !password) {
+    errEl.textContent = 'Email & password wajib diisi';
+    errEl.classList.add('show');
+    return;
+  }
+
+  try {
+    const res = await fetch(API + '/auth/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, password })
+    });
+    const data = await res.json();
+    if (data.error) throw new Error(data.error);
+
+    token = data.token;
+    currentUser = data.user;
+    localStorage.setItem('token', token);
+    closeModal('authModal');
+    updateAuthUI();
+    initSocket();
+    loadChatHistory();
+    showToast('Selamat datang, ' + currentUser.username + '!');
+  } catch (err) {
+    errEl.textContent = err.message;
+    errEl.classList.add('show');
+  }
+}
+
+async function doRegister() {
+  const username = document.getElementById('regUsername').value.trim();
+  const email = document.getElementById('regEmail').value.trim();
+  const password = document.getElementById('regPassword').value;
+  const bio = document.getElementById('regBio').value.trim();
+  const errEl = document.getElementById('authError');
+
+  if (!username || !email || !password) {
+    errEl.textContent = 'Semua field wajib diisi';
+    errEl.classList.add('show');
+    return;
+  }
+
+  try {
+    const res = await fetch(API + '/auth/register', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ username, email, password, bio })
+    });
+    const data = await res.json();
+    if (data.error) throw new Error(data.error);
+
+    token = data.token;
+    currentUser = data.user;
+    localStorage.setItem('token', token);
+    closeModal('authModal');
+    updateAuthUI();
+    initSocket();
+    loadChatHistory();
+    showToast('Profil berhasil dibuat!');
+  } catch (err) {
+    errEl.textContent = err.message;
+    errEl.classList.add('show');
+  }
+}
+
+function logout() {
+  if (!confirm('Logout dari akun?')) return;
+  token = null;
+  currentUser = null;
+  localStorage.removeItem('token');
+  if (socket) { socket.disconnect(); socket = null; socketInitialized = false; }
+  updateAuthUI();
+  showToast('Anda telah logout', 'info');
+}
+
+async function loadCurrentUser() {
+  if (!token) return updateAuthUI();
+  try {
+    const res = await fetch(API + '/auth/me', { headers: authHeaders() });
+    const data = await res.json();
+    if (data.error) throw new Error(data.error);
+    currentUser = data;
+    updateAuthUI();
+    initSocket();
+    loadChatHistory();
+  } catch (err) {
+    token = null;
+    currentUser = null;
+    localStorage.removeItem('token');
+    updateAuthUI();
+  }
+}
+
+function updateAuthUI() {
+  const sidebarUser = document.getElementById('sidebarUser');
+  const topbarAuth = document.getElementById('topbarAuthArea');
+  const chatLocked = document.getElementById('chatLocked');
+  const chatBody = document.getElementById('chatBody');
+  const chatInputWrap = document.getElementById('chatInputWrap');
+
+  if (currentUser) {
+    const avatarHtml = currentUser.avatar
+      ? `<img src="${currentUser.avatar}" alt="">`
+      : escapeHtml(currentUser.username.charAt(0).toUpperCase());
+
+    sidebarUser.innerHTML = `
+      <div class="sidebar-user-inner">
+        <div class="sidebar-user-avatar">${avatarHtml}</div>
+        <div class="sidebar-user-info">
+          <div class="sidebar-user-name">${escapeHtml(currentUser.username)}</div>
+          <div class="sidebar-user-sub">${escapeHtml(currentUser.email)}</div>
+        </div>
+        <button class="sidebar-user-logout" onclick="logout()" title="Logout">
+          <i class="fas fa-sign-out-alt"></i>
+        </button>
+      </div>
+    `;
+
+    topbarAuth.innerHTML = `<div class="sidebar-user-avatar" style="width:32px;height:32px;">${avatarHtml}</div>`;
+
+    chatLocked.style.display = 'none';
+    chatBody.style.display = 'flex';
+    chatInputWrap.style.display = 'flex';
+  } else {
+    sidebarUser.innerHTML = `
+      <button class="sidebar-login-btn" onclick="openAuth('login')">
+        <i class="fas fa-sign-in-alt"></i> Masuk / Buat Profil
+      </button>
+    `;
+    topbarAuth.innerHTML = `<button class="btn btn-primary" onclick="openAuth('login')" style="padding:6px 12px;font-size:0.7rem;"><i class="fas fa-sign-in-alt"></i></button>`;
+
+    chatLocked.style.display = 'flex';
+    chatBody.style.display = 'none';
+    chatInputWrap.style.display = 'none';
+  }
+}
+
+// ============================================================
+// PAYMENT
+// ============================================================
+async function loadPaymentMethods() {
+  try {
+    const res = await fetch(API + '/payment-methods');
+    const methods = await res.json();
+    document.getElementById('paymentGrid').innerHTML = methods.map(m => `
+      <div class="payment-card" onclick="copyPayment('${m.number}', '${m.name}')">
+        <div class="payment-icon" style="color:${m.color};">
+          <i class="fas ${m.type === 'bank' ? 'fa-university' : 'fa-wallet'}"></i>
+        </div>
+        <div class="payment-info">
+          <div class="payment-name">${m.name}</div>
+          <div class="payment-number">${m.number}</div>
+          <div class="payment-holder">a/n ${m.holder}</div>
+        </div>
+        <button class="copy-btn"><i class="fas fa-copy"></i></button>
+      </div>
+    `).join('');
+  } catch (e) { console.error(e); }
+}
+
+function copyPayment(number, name) {
+  navigator.clipboard.writeText(number).then(() => {
+    showToast(`${name}: ${number} disalin`, 'info');
+  });
+}
+
+// ============================================================
+// STATS
+// ============================================================
+async function loadStats() {
+  try {
+    const res = await fetch(API + '/stats');
+    const d = await res.json();
+    document.getElementById('statOnline').textContent = d.online || 0;
+    document.getElementById('statVisitors').textContent = (d.visitors || 0).toLocaleString();
+    document.getElementById('statUsers').textContent = (d.totalUsers || 0).toLocaleString();
+    document.getElementById('statProjects').textContent = (d.totalProjects || 0).toLocaleString();
+    document.getElementById('sidebarOnline').textContent = d.online || 0;
+    document.getElementById('chatOnline').textContent = d.online || 0;
+  } catch (e) {}
+}
+
+// ============================================================
+// SERVER STATUS
+// ============================================================
+async function loadServerStatus() {
+  try {
+    const res = await fetch(API + '/server-status');
+    const data = await res.json();
+    const wrap = document.getElementById('serverWrap');
+    if (!data.online) {
+      wrap.innerHTML = `
+        <div class="server-card">
+          <div class="server-head">
+            <div class="server-name"><i class="fas fa-server"></i> Panel Pterodactyl</div>
+            <span class="server-status offline"><span class="dot"></span> Offline</span>
+          </div>
+          <p style="font-size:0.75rem;color:var(--text-muted);">${data.message || 'Belum dikonfigurasi'}</p>
+        </div>
+      `;
+      return;
+    }
+    wrap.innerHTML = data.servers.map(s => `
+      <div class="server-card">
+        <div class="server-head">
+          <div class="server-name"><i class="fas fa-server"></i> ${escapeHtml(s.name)}</div>
+          <span class="server-status ${s.status === 'running' ? 'online' : 'offline'}">
+            <span class="dot"></span> ${s.status}
+          </span>
+        </div>
+        <div class="server-stats">
+          <div class="server-stat"><div class="server-stat-val">${s.cpu || 0}%</div><div class="server-stat-label">CPU</div></div>
+          <div class="server-stat"><div class="server-stat-val">${s.memory || 0}MB</div><div class="server-stat-label">RAM</div></div>
+          <div class="server-stat"><div class="server-stat-val">${s.disk || 0}MB</div><div class="server-stat-label">Disk</div></div>
+        </div>
+      </div>
+    `).join('');
+  } catch (e) {}
+}
+
+// ============================================================
+// SOCKET
+// ============================================================
+function initSocket() {
+  if (!token || socketInitialized) return;
+  socketInitialized = true;
+
+  socket = io({ auth: { token } });
+
+  socket.on('connect', () => console.log('Socket connected'));
+  socket.on('connect_error', (err) => {
+    console.error('Socket error:', err.message);
+    socketInitialized = false;
+  });
+
+  socket.on('online-count', (c) => {
+    document.getElementById('chatOnline').textContent = c;
+    document.getElementById('sidebarOnline').textContent = c;
+  });
+
+  socket.on('chat-message', (msg) => addChatMessage(msg));
+
+  // Game events
+  socket.on('game:start', (data) => {
+    currentGameState = data.state;
+    const el = document.getElementById('gameStatus');
+    if (el) el.textContent = 'Game dimulai!';
+    renderGame();
+  });
+
+  socket.on('game:update', (data) => {
+    currentGameState = data.state;
+    renderGame();
+  });
+
+  socket.on('game:opponent-left', () => {
+    showToast('Lawan keluar dari game', 'error');
+    const el = document.getElementById('gameStatus');
+    if (el) el.textContent = 'Lawan keluar';
+  });
+}
+
+function addChatMessage(msg) {
+  const body = document.getElementById('chatBody');
+  if (!body) return;
+  const div = document.createElement('div');
+
+  if (msg.type === 'system') {
+    div.className = 'chat-msg system';
+    div.innerHTML = `<span>${escapeHtml(msg.message)}</span>`;
+  } else {
+    const avatarHtml = msg.avatar
+      ? `<img src="${msg.avatar}" alt="">`
+      : escapeHtml((msg.username || '?').charAt(0).toUpperCase());
+    div.className = 'chat-msg';
+    div.innerHTML = `
+      <div class="chat-avatar">${avatarHtml}</div>
+      <div class="chat-content">
+        <div class="chat-user">${escapeHtml(msg.username)}</div>
+        <div class="chat-text">${escapeHtml(msg.message)}</div>
+        <span class="chat-time">${new Date(msg.createdAt).toLocaleTimeString()}</span>
+      </div>
+    `;
+  }
+  body.appendChild(div);
+  body.scrollTop = body.scrollHeight;
+}
+
+async function loadChatHistory() {
+  try {
+    const res = await fetch(API + '/chat/history');
+    const history = await res.json();
+    const body = document.getElementById('chatBody');
+    if (!body) return;
+    body.innerHTML = '';
+    history.forEach(addChatMessage);
+  } catch (e) {}
+}
+
+function sendChat() {
+  if (!currentUser) return showToast('Login dulu untuk chat', 'error');
+  const input = document.getElementById('chatInput');
+  const msg = input.value.trim();
+  if (!msg || !socket) return;
+  socket.emit('send-message', { message: msg });
+  input.value = '';
+}
+
+// ============================================================
+// GAMES
+// ============================================================
+let currentGame = null;
+let currentRoomId = null;
+let currentGameState = null;
+let chessSelected = null;
+
+function openGameLobby(game) {
+  if (!currentUser) {
+    showToast('Login dulu untuk main game', 'error');
+    openAuth('login');
+    return;
+  }
+  currentGame = game;
+  document.getElementById('gamesSelector').style.display = 'none';
+  document.getElementById('gameLobby').style.display = 'block';
+  const titles = { chess: '♟️ Catur', ludo: '🎲 Ludo', tictactoe: '⭕ Tic Tac Toe' };
+  document.getElementById('gameLobbyTitle').textContent = titles[game] || 'Game';
+  refreshRooms();
+}
+
+function backToGameSelect() {
+  document.getElementById('gamesSelector').style.display = 'grid';
+  document.getElementById('gameLobby').style.display = 'none';
+  document.getElementById('gameBoardWrap').style.display = 'none';
+  currentGame = null;
+  currentRoomId = null;
+  currentGameState = null;
+  chessSelected = null;
+}
+
+function refreshRooms() {
+  if (!socket) return;
+  socket.emit('game:list', { game: currentGame }, (rooms) => {
+    const el = document.getElementById('gameRooms');
+    if (!rooms.length) {
+      el.innerHTML = '<p style="color:var(--text-muted);font-size:0.8rem;text-align:center;padding:20px;">Belum ada room. Buat room baru!</p>';
+      return;
+    }
+    el.innerHTML = rooms.map(r => `
+      <div class="game-room-item">
+        <div class="game-room-info">
+          <div class="game-room-id">#${r.id}</div>
+          <div class="game-room-host">Host: ${escapeHtml(r.host)} • ${r.players}/${r.maxPlayers}</div>
+        </div>
+        <button class="btn btn-primary" onclick="joinRoom('${r.id}')">
+          <i class="fas fa-sign-in-alt"></i> Gabung
+        </button>
+      </div>
+    `).join('');
+  });
+}
+
+function createRoom() {
+  if (!socket) return showToast('Koneksi terputus', 'error');
+  socket.emit('game:create', { game: currentGame }, (res) => {
+    if (res.error) return showToast(res.error, 'error');
+    currentRoomId = res.roomId;
+    currentGameState = res.state;
+    showGameBoard();
+    document.getElementById('gameStatus').textContent = 'Menunggu lawan... ID: ' + res.roomId;
+  });
+}
+
+function joinRoom(roomId) {
+  if (!socket) return;
+  socket.emit('game:join', { roomId }, (res) => {
+    if (res.error) return showToast(res.error, 'error');
+    currentRoomId = roomId;
+    currentGameState = res.state;
+    showGameBoard();
+    document.getElementById('gameStatus').textContent = 'Game dimulai!';
+  });
+}
+
+function playVsAI() {
+  if (!socket) return;
+  socket.emit('game:vs-ai', { game: currentGame }, (res) => {
+    if (res.error) return showToast(res.error, 'error');
+    currentRoomId = res.roomId;
+    currentGameState = res.state;
+    showGameBoard();
+    document.getElementById('gameStatus').textContent = 'Melawan AI';
+  });
+}
+
+function showGameBoard() {
+  document.getElementById('gamesSelector').style.display = 'none';
+  document.getElementById('gameLobby').style.display = 'none';
+  document.getElementById('gameBoardWrap').style.display = 'block';
+
+  document.getElementById('tttBoard').style.display = currentGame === 'tictactoe' ? 'grid' : 'none';
+  document.getElementById('chessBoard').style.display = currentGame === 'chess' ? 'grid' : 'none';
+  document.getElementById('ludoBoard').style.display = currentGame === 'ludo' ? 'block' : 'none';
+
+  renderGame();
+}
+
+function renderGame() {
+  if (!currentGameState || !currentGame) return;
+  if (currentGame === 'tictactoe') renderTicTacToe();
+  else if (currentGame === 'chess') renderChess();
+  else if (currentGame === 'ludo') renderLudo();
+}
+
+// Tic Tac Toe
+function renderTicTacToe() {
+  const s = currentGameState;
+  const board = document.getElementById('tttBoard');
+  board.innerHTML = s.board.map((cell, i) => {
+    const isWin = s.winningLine && s.winningLine.includes(i);
+    return `<div class="ttt-cell ${cell === 'X' ? 'x' : cell === 'O' ? 'o' : ''} ${isWin ? 'win' : ''}" onclick="tttClick(${i})">${cell || ''}</div>`;
+  }).join('');
+
+  document.getElementById('gameTurn').textContent = s.winner
+    ? (s.winner === 'draw' ? 'Seri!' : `Pemenang: ${s.winner}`)
+    : `Giliran: ${s.currentPlayer}`;
+}
+
+function tttClick(i) {
+  if (!currentGameState || currentGameState.winner || currentGameState.board[i]) return;
+  if (currentGameState.currentPlayer !== 'X') return;
+  socket.emit('game:move', { roomId: currentRoomId, move: { index: i } });
+}
+
+// Chess
+function renderChess() {
+  const s = currentGameState;
+  const board = document.getElementById('chessBoard');
+  const pieces = {
+    'wp': '♙', 'wr': '♖', 'wn': '♘', 'wb': '♗', 'wq': '♕', 'wk': '♔',
+    'bp': '♟', 'br': '♜', 'bn': '♞', 'bb': '♝', 'bq': '♛', 'bk': '♚'
+  };
+
+  let validMoves = [];
+  if (chessSelected) {
+    validMoves = getClientChessMoves(s.board, chessSelected[0], chessSelected[1]);
+  }
+
+  board.innerHTML = '';
+  for (let r = 0; r < 8; r++) {
+    for (let c = 0; c < 8; c++) {
+      const isLight = (r + c) % 2 === 0;
+      const piece = s.board[r][c];
+      const isSelected = chessSelected && chessSelected[0] === r && chessSelected[1] === c;
+      const isValid = validMoves.some(([vr, vc]) => vr === r && vc === c);
+
+      const sq = document.createElement('div');
+      sq.className = `chess-square ${isLight ? 'light' : 'dark'} ${isSelected ? 'selected' : ''} ${isValid ? 'valid' : ''}`;
+      sq.textContent = piece ? pieces[piece] : '';
+      sq.onclick = () => chessClick(r, c);
+      board.appendChild(sq);
+    }
+  }
+
+  document.getElementById('gameTurn').textContent = `Giliran: ${s.turn === 'w' ? 'Putih' : 'Hitam'}`;
+}
+
+function getClientChessMoves(board, r, c) {
+  const piece = board[r][c];
+  if (!piece) return [];
+  const color = piece[0], type = piece[1];
+  const enemy = color === 'w' ? 'b' : 'w';
+  const moves = [];
+
+  const slide = (dirs) => {
+    for (const [dr, dc] of dirs) {
+      let nr = r + dr, nc = c + dc;
+      while (nr >= 0 && nr <= 7 && nc >= 0 && nc <= 7) {
+        const t = board[nr][nc];
+        if (t && t[0] === color) break;
+        moves.push([nr, nc]);
+        if (t) break;
+        nr += dr; nc += dc;
+      }
+    }
+  };
+
+  if (type === 'p') {
+    const dir = color === 'w' ? -1 : 1;
+    const startRow = color === 'w' ? 6 : 1;
+    if (r + dir >= 0 && r + dir <= 7 && !board[r + dir][c]) {
+      moves.push([r + dir, c]);
+      if (r === startRow && !board[r + 2 * dir][c]) moves.push([r + 2 * dir, c]);
+    }
+    for (const dc of [-1, 1]) {
+      const nr = r + dir, nc = c + dc;
+      if (nr >= 0 && nr <= 7 && nc >= 0 && nc <= 7) {
+        const t = board[nr][nc];
+        if (t && t[0] === enemy) moves.push([nr, nc]);
+      }
+    }
+  } else if (type === 'r') slide([[1,0],[-1,0],[0,1],[0,-1]]);
+  else if (type === 'n') {
+    for (const [dr, dc] of [[2,1],[2,-1],[-2,1],[-2,-1],[1,2],[1,-2],[-1,2],[-1,-2]]) {
+      const nr = r + dr, nc = c + dc;
+      if (nr >= 0 && nr <= 7 && nc >= 0 && nc <= 7) {
+        const t = board[nr][nc];
+        if (!t || t[0] === enemy) moves.push([nr, nc]);
+      }
+    }
+  } else if (type === 'b') slide([[1,1],[1,-1],[-1,1],[-1,-1]]);
+  else if (type === 'q') slide([[1,0],[-1,0],[0,1],[0,-1],[1,1],[1,-1],[-1,1],[-1,-1]]);
+  else if (type === 'k') {
+    for (const [dr, dc] of [[1,0],[-1,0],[0,1],[0,-1],[1,1],[1,-1],[-1,1],[-1,-1]]) {
+      const nr = r + dr, nc = c + dc;
+      if (nr >= 0 && nr <= 7 && nc >= 0 && nc <= 7) {
+        const t = board[nr][nc];
+        if (!t || t[0] === enemy) moves.push([nr, nc]);
+      }
+    }
+  }
+  return moves;
+}
+
+function chessClick(r, c) {
+  const s = currentGameState;
+  if (!s || s.turn !== 'w') return;
+
+  const piece = s.board[r][c];
+
+  if (chessSelected) {
+    const validMoves = getClientChessMoves(s.board, chessSelected[0], chessSelected[1]);
+    if (validMoves.some(([vr, vc]) => vr === r && vc === c)) {
+      socket.emit('game:move', {
+        roomId: currentRoomId,
+        move: { from: chessSelected, to: [r, c] }
+      });
+      chessSelected = null;
+    } else if (piece && piece[0] === 'w') {
+      chessSelected = [r, c];
+    } else {
+      chessSelected = null;
+    }
+  } else if (piece && piece[0] === 'w') {
+    chessSelected = [r, c];
+  }
+  renderChess();
+}
+
+// Ludo
+function renderLudo() {
+  const s = currentGameState;
+  const players = document.getElementById('ludoPlayers');
+  const pieces = document.getElementById('ludoPieces');
+  const diceEl = document.getElementById('ludoDice');
+
+  const colors = { red: '🔴 Merah', blue: '🔵 Biru', green: '🟢 Hijau', yellow: '🟡 Kuning' };
+
+  players.innerHTML = s.players.map((p, i) => `
+    <div class="ludo-player ${p.color} ${i === s.currentPlayer ? 'active' : ''}">
+      <div class="ludo-player-name">${colors[p.color] || p.color}</div>
+      <div class="ludo-player-sub">Finish: ${p.finish}/4</div>
+    </div>
+  `).join('');
+
+  diceEl.textContent = s.dice ? `🎲 ${s.dice}` : '🎲';
+
+  const myPlayer = s.players[0];
+  pieces.innerHTML = myPlayer.pieces.map((pos, i) => {
+    const cls = `ludo-piece ${myPlayer.color} ${pos === 99 ? 'finish' : ''}`;
+    const label = pos === -1 ? '🏠' : pos === 99 ? '✓' : pos;
+    return `<div class="${cls}" onclick="ludoClick(${i})">${label}</div>`;
+  }).join('');
+
+  document.getElementById('gameTurn').textContent = `Giliran: ${colors[s.players[s.currentPlayer].color]}`;
+}
+
+function rollLudoDice() {
+  if (!currentGameState) return;
+  if (currentGameState.currentPlayer !== 0) return showToast('Bukan giliran Anda', 'error');
+  if (currentGameState.rolled) return showToast('Sudah roll, pilih piece', 'error');
+
+  const dice = Math.floor(Math.random() * 6) + 1;
+  socket.emit('game:move', {
+    roomId: currentRoomId,
+    move: { _rollOnly: true, dice }
+  });
+}
+
+function ludoClick(pieceIdx) {
+  if (!currentGameState) return;
+  if (currentGameState.currentPlayer !== 0) return showToast('Bukan giliran Anda', 'error');
+  if (!currentGameState.rolled) return showToast('Roll dadu dulu', 'error');
+  socket.emit('game:move', {
+    roomId: currentRoomId,
+    move: { pieceIdx }
+  });
+}
+
+function leaveGame() {
+  if (currentRoomId && socket) {
+    socket.emit('game:leave', { roomId: currentRoomId });
+  }
+  currentRoomId = null;
+  currentGameState = null;
+  chessSelected = null;
+  backToGameSelect();
+}
+
+// ============================================================
+// PROJECTS
+// ============================================================
+async function loadProjects() {
+  const search = document.getElementById('projectSearch')?.value || '';
+  const type = document.getElementById('projectType')?.value || 'all';
+  const sort = document.getElementById('projectSort')?.value || 'recent';
+
+  const params = new URLSearchParams({ search, type, sort });
+
+  try {
+    const res = await fetch(API + '/projects?' + params);
+    const projects = await res.json();
+    const grid = document.getElementById('projectsGrid');
+
+    if (!projects.length) {
+      grid.innerHTML = `
+        <div class="projects-empty">
+          <i class="fas fa-inbox"></i>
+          <p>Belum ada karya yang dibagikan</p>
+          <p style="font-size:0.75rem;">Jadilah yang pertama membagikan!</p>
+        </div>
+      `;
+      return;
+    }
+
+    grid.innerHTML = projects.map(p => {
+      const typeClass = ['tool','script','website','bot'].includes(p.type) ? p.type : 'other';
+      const avatarHtml = p.author.avatar
+        ? `<img src="${p.author.avatar}" alt="">`
+        : escapeHtml(p.author.username.charAt(0).toUpperCase());
+
+      return `
+        <div class="project-card" onclick="openProjectDetail('${p.id}')">
+          <div class="project-head">
+            <div class="project-author-avatar">${avatarHtml}</div>
+            <div>
+              <div class="project-author">oleh</div>
+              <div class="project-author-name">${escapeHtml(p.author.username)}</div>
+            </div>
+            <span class="project-type-badge ${typeClass}">${p.type}</span>
+          </div>
+          <div class="project-title">${escapeHtml(p.title)}</div>
+          <div class="project-desc">${escapeHtml(p.description)}</div>
+          ${p.tags.length ? `<div class="project-tags">${p.tags.map(t => `<span class="project-tag">#${escapeHtml(t)}</span>`).join('')}</div>` : ''}
+          <div class="project-stats">
+            <span><i class="fas fa-heart"></i> ${p.likes || 0}</span>
+            <span><i class="fas fa-download"></i> ${p.downloads || 0}</span>
+            <span><i class="fas fa-code"></i> ${escapeHtml(p.language || 'other')}</span>
+          </div>
+        </div>
+      `;
+    }).join('');
+  } catch (e) { console.error(e); }
+}
+
+async function openProjectDetail(id) {
+  try {
+    const res = await fetch(API + '/projects/' + id);
+    const p = await res.json();
+    if (p.error) throw new Error(p.error);
+
+    const detail = document.getElementById('detailBody');
+    document.getElementById('detailTitle').textContent = p.title;
+
+    const avatarHtml = p.author?.avatar
+      ? `<img src="${p.author.avatar}" alt="">`
+      : escapeHtml((p.author?.username || '?').charAt(0).toUpperCase());
+
+    detail.innerHTML = `
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px;">
+        <div class="project-author-avatar">${avatarHtml}</div>
+        <div>
+          <div class="project-author">oleh</div>
+          <div class="project-author-name">${escapeHtml(p.author?.username || 'Unknown')}</div>
+        </div>
+        <span class="project-type-badge ${p.type}" style="margin-left:auto;">${p.type}</span>
+      </div>
+      <p style="font-size:0.82rem;color:var(--text-secondary);line-height:1.6;margin-bottom:12px;white-space:pre-wrap;">${escapeHtml(p.description)}</p>
+      ${p.tags.length ? `<div class="project-tags" style="margin-bottom:14px;">${p.tags.map(t => `<span class="project-tag">#${escapeHtml(t)}</span>`).join('')}</div>` : ''}
+      ${p.demoUrl ? `<div style="margin-bottom:10px;"><a href="${escapeHtml(p.demoUrl)}" target="_blank" rel="noopener" style="color:var(--blue-light);font-size:0.8rem;"><i class="fas fa-external-link-alt"></i> Lihat Demo</a></div>` : ''}
+      ${p.sourceCode ? `
+        <div style="margin-bottom:10px;">
+          <div style="font-size:0.72rem;color:var(--text-muted);margin-bottom:6px;font-weight:600;text-transform:uppercase;letter-spacing:0.5px;">Source Code</div>
+          <pre style="background:var(--bg-main);border:1px solid var(--border);border-radius:8px;padding:12px;font-family:'JetBrains Mono',monospace;font-size:0.72rem;overflow-x:auto;max-height:300px;color:var(--text-secondary);">${escapeHtml(p.sourceCode)}</pre>
+          <button class="btn btn-secondary" style="margin-top:6px;font-size:0.72rem;" onclick="copyCode('${p.id}')"><i class="fas fa-copy"></i> Copy Code</button>
+        </div>
+      ` : ''}
+      ${p.fileUrl ? `<div style="margin-bottom:10px;"><a href="${p.fileUrl}" download class="btn btn-primary" style="font-size:0.75rem;"><i class="fas fa-download"></i> Download ${escapeHtml(p.fileName || 'file')}</a></div>` : ''}
+      <div style="display:flex;gap:8px;margin-top:16px;padding-top:14px;border-top:1px solid var(--border);">
+        <button class="btn btn-secondary" onclick="likeProject('${p.id}', this)"><i class="fas fa-heart"></i> Suka (${p.likes || 0})</button>
+        ${p.fileUrl ? `<button class="btn btn-primary" onclick="downloadProject('${p.id}','${escapeHtml(p.fileUrl)}')"><i class="fas fa-download"></i> Unduh</button>` : ''}
+      </div>
+    `;
+
+    openModal('detailModal');
+    window._currentProject = p;
+  } catch (err) {
+    showToast(err.message, 'error');
+  }
+}
+
+function copyCode(id) {
+  if (!window._currentProject) return;
+  navigator.clipboard.writeText(window._currentProject.sourceCode || '').then(() => {
+    showToast('Source code disalin!', 'info');
+  });
+}
+
+async function likeProject(id, btn) {
+  if (!currentUser) return showToast('Login dulu', 'error');
+  try {
+    const res = await fetch(API + '/projects/' + id + '/like', {
+      method: 'POST',
+      headers: authHeaders()
+    });
+    const data = await res.json();
+    if (data.success) {
+      showToast('Terima kasih!');
+      loadProjects();
+      if (btn) btn.innerHTML = `<i class="fas fa-heart"></i> Suka (${data.likes})`;
+    }
+  } catch (e) {}
+}
+
+async function downloadProject(id, url) {
+  try {
+    await fetch(API + '/projects/' + id + '/download', { method: 'POST' });
+    window.open(url, '_blank');
+    loadProjects();
+  } catch (e) {}
+}
+
+function openShareModal() {
+  if (!currentUser) {
+    showToast('Login dulu untuk membagikan karya', 'error');
+    openAuth('login');
+    return;
+  }
+  document.getElementById('shareError').classList.remove('show');
+  openModal('shareModal');
+}
+
+async function submitProject() {
+  const btn = document.getElementById('shareSubmitBtn');
+  const errEl = document.getElementById('shareError');
+
+  const title = document.getElementById('projTitle').value.trim();
+  const description = document.getElementById('projDesc').value.trim();
+  const type = document.getElementById('projType').value;
+  const language = document.getElementById('projLang').value;
+  const tagsStr = document.getElementById('projTags').value.trim();
+  const demoUrl = document.getElementById('projDemo').value.trim();
+  const sourceCode = document.getElementById('projCode').value;
+  const fileInput = document.getElementById('projFile');
+
+  if (!title || !description) {
+    errEl.textContent = 'Judul & deskripsi wajib diisi';
+    errEl.classList.add('show');
+    return;
+  }
+
+  const tags = tagsStr ? tagsStr.split(',').map(t => t.trim()).filter(Boolean) : [];
+
+  btn.disabled = true;
+  btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Mengirim...';
+
+  try {
+    let fileData = null;
+    if (fileInput.files[0]) {
+      const fd = new FormData();
+      fd.append('file', fileInput.files[0]);
+      const uploadRes = await fetch(API + '/upload', {
+        method: 'POST',
+        headers: authHeaders(),
+        body: fd
+      });
+      const uploadData = await uploadRes.json();
+      if (uploadData.error) throw new Error(uploadData.error);
+      fileData = uploadData.file;
+    }
+
+    const res = await fetch(API + '/projects', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', ...authHeaders() },
+      body: JSON.stringify({
+        title, description, type, language, tags, demoUrl, sourceCode,
+        fileName: fileData?.originalName || '',
+        fileUrl: fileData?.url || ''
+      })
+    });
+    const data = await res.json();
+    if (data.error) throw new Error(data.error);
+
+    showToast('Karya berhasil dibagikan!');
+    closeModal('shareModal');
+    ['projTitle','projDesc','projTags','projDemo','projCode'].forEach(id => document.getElementById(id).value = '');
+    fileInput.value = '';
+    loadProjects();
+    loadStats();
+  } catch (err) {
+    errEl.textContent = err.message;
+    errEl.classList.add('show');
+  } finally {
+    btn.disabled = false;
+    btn.innerHTML = '<i class="fas fa-paper-plane"></i> Bagikan';
+  }
+}
+
+// ============================================================
+// UPLOAD
+// ============================================================
+const uploadArea = document.getElementById('uploadArea');
+uploadArea.addEventListener('dragover', (e) => { e.preventDefault(); uploadArea.classList.add('dragover'); });
+uploadArea.addEventListener('dragleave', () => uploadArea.classList.remove('dragover'));
+uploadArea.addEventListener('drop', (e) => {
+  e.preventDefault();
+  uploadArea.classList.remove('dragover');
+  if (e.dataTransfer.files[0]) uploadFile(e.dataTransfer.files[0]);
+});
+
+function handleUpload(e) {
+  if (e.target.files[0]) uploadFile(e.target.files[0]);
+  e.target.value = '';
+}
+
+async function uploadFile(file) {
+  if (!currentUser) return showToast('Login dulu untuk upload', 'error');
+  if (file.size > 50 * 1024 * 1024) return showToast('File terlalu besar (max 50MB)', 'error');
+
+  const fd = new FormData();
+  fd.append('file', file);
+  showToast('Uploading...', 'info');
+
+  try {
+    const res = await fetch(API + '/upload', {
+      method: 'POST',
+      headers: authHeaders(),
+      body: fd
+    });
+    const data = await res.json();
+    if (data.error) throw new Error(data.error);
+
+    showToast('File berhasil diupload!');
+    const preview = document.getElementById('uploadPreview');
+    preview.classList.add('active');
+
+    const isImage = file.type.startsWith('image/');
+    const isVideo = file.type.startsWith('video/');
+
+    const div = document.createElement('div');
+    div.className = 'preview-item';
+    div.innerHTML = `
+      ${isImage ? `<img src="${data.file.url}" class="preview-thumb">`
+        : isVideo ? `<video src="${data.file.url}" class="preview-thumb" muted></video>`
+        : `<div class="preview-thumb" style="display:flex;align-items:center;justify-content:center;"><i class="fas fa-file"></i></div>`}
+      <div class="preview-info">
+        <div class="preview-name">${escapeHtml(file.name)}</div>
+        <div class="preview-size">${formatSize(file.size)}</div>
+      </div>
+      <a href="${data.file.url}" target="_blank" class="copy-btn"><i class="fas fa-external-link-alt"></i></a>
+    `;
+    preview.appendChild(div);
+    loadStats();
+  } catch (err) {
+    showToast('Upload gagal: ' + err.message, 'error');
+  }
+}
+
+function formatSize(bytes) {
+  if (bytes < 1024) return bytes + ' B';
+  if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + ' KB';
+  return (bytes / (1024 * 1024)).toFixed(1) + ' MB';
+}
+
+// ============================================================
+// INIT
+// ============================================================
+async function init() {
+  await loadCurrentUser();
+  loadPaymentMethods();
+  loadStats();
+  loadServerStatus();
+  loadProjects();
+
+  setInterval(loadStats, 5000);
+  setInterval(loadServerStatus, 15000);
+}
+
+init();
+
+console.log('%c🕷️ ZIROWR STORE', 'font-size:20px;font-weight:bold;color:#c92a2a;');
+</script>
+</body>
+</html>
